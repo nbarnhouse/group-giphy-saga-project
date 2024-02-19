@@ -1,0 +1,41 @@
+.header-view-div {
+  height: 150px;
+  display: flex;
+  contain: layout;
+  background-color: black;
+  color: gold;
+}
+
+.header-img {
+  height: 100%;
+  width: 150px;
+  background-image: url('./images/titanite.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.header-title {
+  margin: auto;
+}
+
+.header-title h1,
+.header-title h3 {
+  text-align: center;
+}
+
+.nav-div {
+  position: absolute;
+  bottom: 2px;
+  right: 5px;
+}
+
+.nav-div ul {
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-div li {
+  cursor: pointer;
+}
