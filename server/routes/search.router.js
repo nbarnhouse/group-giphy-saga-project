@@ -9,7 +9,7 @@ const API_KEY = process.env.API_KEY;
 const GIPHY_BASE_URL = 'api.giphy.com/v1/gifs/search';
 console.log('API Key:', API_KEY);
 
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
   const { searchTerm } = req.body;
   const endpointURL = `https://${GIPHY_BASE_URL}/?api_key=${API_KEY}&q=${searchTerm}&limit=10`;
   console.log('Endpoint URL:', endpointURL);
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
       res.send(searchResponse);
     })
     .catch((err) => {
-      console.log('ERROR in server /search/ GET ROUTE:', err);
+      console.log('ERROR in server /search/ POST ROUTE:', err);
       res.sendStatus(500);
     });
 });
