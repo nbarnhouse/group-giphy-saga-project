@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import './Manage.css';
+
 export default function Manage() {
   const dispatch = useDispatch();
   const categoryList = useSelector((store) => store.categories);
@@ -11,12 +13,23 @@ export default function Manage() {
 
   return (
     <div className="manage-view-div">
-      <h1>I am a manage view placeholder</h1>
-      <h2>I may or may not be used for stretch goals</h2>
-      <div className="categorie-contents">
-        {categoryList.map((item) => {
-          return <p key={item.id}>{JSON.stringify(item)}</p>;
-        })}
+      <h1>MANAGEMENT MODE</h1>
+
+      <div className="category-contents">
+        <h2>Current Categories:</h2>
+        <div className="category-list">
+          {categoryList.map((item) => {
+            return (
+              <span key={item.id}>
+                <b>{item.name}</b>
+              </span>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="create-category-div">
+        <h2 className="center-align">Create a new category:</h2>
       </div>
     </div>
   );
