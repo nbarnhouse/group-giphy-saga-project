@@ -32,7 +32,25 @@ router.post('/', (req, res) => {
       res.sendStatus(201);
     })
     .catch((err) => {
-      console.error('ERROR in server categories/ POST route');
+      console.error('ERROR in server categories/ POST route', err);
+      res.sendStatus(500);
+    });
+});
+
+router.delete('/:id', (req, res) => {
+  const queryText = `DELETE FROM "categories"
+  WHERE "id" = $1;`;
+  // console.log('req.params:', req.params.id);
+  const queryArgs = [req.params.id];
+
+  pool
+    .query(queryText, queryArgs)
+    .then((dbResp) => {
+      console.log(`Deleted Category with id of ${req.params.id}.`);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('ERROR in server categories/ DELETE route.', err);
       res.sendStatus(500);
     });
 });
