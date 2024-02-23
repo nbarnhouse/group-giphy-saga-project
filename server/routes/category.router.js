@@ -55,4 +55,23 @@ router.delete('/:id', (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+  const queryText = `UPDATE "categories"
+  SET "name" = $1
+  WHERE "id" = $2;`;
+  const queryArgs = [req.body.name, req.params.id];
+  // console.log('req.params:', req.params.id, 'req.body:', req.body.name);
+
+  pool
+    .query(queryText, queryArgs)
+    .then((dbResp) => {
+      console.log(`Updated entry ID ${req.params.id} with "${req.body.name}"`);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('ERROR in server categories/ PUT route:', err);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;

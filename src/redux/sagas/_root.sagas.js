@@ -4,6 +4,7 @@ import { getGiphySaga } from './getGiphy.saga';
 import { getCategoriesSaga } from './getCategories.saga';
 import { postCategorySaga } from './postCategory.saga';
 import { deleteCategorySaga } from './deleteCategory.saga';
+import { putCategorySaga } from './putCategory.saga';
 
 // Import Saga files here
 
@@ -15,6 +16,7 @@ function* rootSaga() {
   yield takeEvery('GET_CATEGORIES', getCategoriesSaga);
   yield takeEvery('POST_CATEGORY', postCategorySaga);
   yield takeEvery('DELETE_CATEGORY', deleteCategorySaga);
+  yield takeEvery('PUT_CATEGORY', putCategorySaga);
 }
 
 export default rootSaga;
