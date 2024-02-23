@@ -17,10 +17,12 @@ INSERT INTO "categories"
   ('whimsical');
 
 -- Favorites table:
+CREATE TABLE "favorites" (
+  "id" SERIAL PRIMARY KEY,
+  "url" VARCHAR (255) NOT NULL, 
+  "title" VARCHAR (255) NOT NULL, 
+  "category_id" integer REFERENCES categories
+);
 
--- You'll need a "favorites" table for storing each instance of
--- a Giphy image that has been "favorited."
--- Each favorite image can be assigned one of the existing
--- categories via foreign key. This is a one-to-many relationship:
---    One favorite has one category.
---    One category can be had by many favorites.
+INSERT INTO favorites
+VALUES (wEM71wbHnFPTHa7FSt, 'https://media4.giphy.com/media/wEM71wbHnFPTHa7FSt/giphy.gif?cid=4af27364vgoqrmjns1fdgc1nmh4dq8uj6byugqfys9tto538&ep=v1_gifs_search&rid=giphy.gif&ct=g', 'Full Moon Love GIF by darrenjturner', '1')
