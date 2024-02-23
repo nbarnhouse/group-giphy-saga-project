@@ -7,6 +7,7 @@ export default function Search() {
   const dispatch = useDispatch();
   const currentGiphyResults = useSelector((store) => store.searchResults);
   const [searchInput, setSearchInput] = useState({ name: '' });
+  const [favorites, setFavorites] = useState([]);
 
   const searchBtnClk = (event) => {
     event.preventDefault();
@@ -23,6 +24,15 @@ export default function Search() {
 
   const addFavoriteStatus = (imageId) => {
     console.log(`Add Favorite: ${imageId}`);
+    if (favorites.includes(imageId)) {
+      // Remove from favorites
+      setFavorites(favorites.filter((id) => id !== imageId));
+    } else {
+      // Add to favorites
+      setFavorites([...favorites, imageId]);
+
+      //Axios call here
+    }
   };
 
   return (
@@ -57,10 +67,12 @@ export default function Search() {
               alt={image.title}
             />
             <button
-              className="like-format"
+              className={`like-format ${
+                favorites.includes(image.id) ? 'favorited' : ''
+              }`}
               onClick={() => addFavoriteStatus(image.id)}
             >
-              Like
+              {favorites.includes(image.id) ? 'Favorited' : 'Like'}
             </button>
           </div>
         ))}
