@@ -8,12 +8,68 @@ router.get('/', (req, res) => {
     SELECT * FROM "categories"
       ORDER BY "name" ASC;
   `;
-  pool.query(queryText)
+  pool
+    .query(queryText)
     .then((result) => {
       res.send(result.rows);
     })
     .catch((error) => {
       console.log(`Error on query ${error}`);
+      res.sendStatus(500);
+    });
+});
+
+router.post('/', (req, res) => {
+  const queryText = `INSERT INTO "categories" ("name")
+  VALUES ($1);`;
+  const queryArgs = [req.body.name];
+  console.log('REQ.BODY', req.body);
+
+  pool
+    .query(queryText, queryArgs)
+    .then((dbresp) => {
+      console.log(`"${queryArgs[0]}" added to DB Categories Table`);
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.error('ERROR in server categories/ POST route', err);
+      res.sendStatus(500);
+    });
+});
+
+router.delete('/:id', (req, res) => {
+  const queryText = `DELETE FROM "categories"
+  WHERE "id" = $1;`;
+  // console.log('req.params:', req.params.id);
+  const queryArgs = [req.params.id];
+
+  pool
+    .query(queryText, queryArgs)
+    .then((dbResp) => {
+      console.log(`Deleted Category with id of ${req.params.id}.`);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('ERROR in server categories/ DELETE route.', err);
+      res.sendStatus(500);
+    });
+});
+
+router.put('/:id', (req, res) => {
+  const queryText = `UPDATE "categories"
+  SET "name" = $1
+  WHERE "id" = $2;`;
+  const queryArgs = [req.body.name, req.params.id];
+  // console.log('req.params:', req.params.id, 'req.body:', req.body.name);
+
+  pool
+    .query(queryText, queryArgs)
+    .then((dbResp) => {
+      console.log(`Updated entry ID ${req.params.id} with "${req.body.name}"`);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('ERROR in server categories/ PUT route:', err);
       res.sendStatus(500);
     });
 });
