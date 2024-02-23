@@ -38,4 +38,17 @@
   border-radius: 10px;
   width: 100%;
   min-height: 10vh;
+  justify-content: space-around;
+}
+
+.create-category-div h2 {
+  margin: 5px;
+}
+
+.create-category-form {
+  padding: 0px 5px;
+}
+
+.create-category-div label {
+  margin-right: 10px;
 }
