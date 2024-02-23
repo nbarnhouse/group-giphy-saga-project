@@ -11,7 +11,7 @@ console.log('API Key:', API_KEY);
 
 router.post('/', (req, res) => {
   const { searchTerm } = req.body;
-  const endpointURL = `https://${GIPHY_BASE_URL}/?api_key=${API_KEY}&q=${searchTerm}&limit=10`;
+  const endpointURL = `https://${GIPHY_BASE_URL}/?api_key=${API_KEY}&q=${searchTerm}&limit=12`;
   console.log('Endpoint URL:', endpointURL);
   axios
     .get(endpointURL)
