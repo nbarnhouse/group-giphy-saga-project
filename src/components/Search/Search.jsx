@@ -63,7 +63,7 @@ export default function Search() {
           <div className="results-item" key={image.id}>
             <img
               className="results-display"
-              src={image.url}
+              src={image.small_url}
               alt={image.title}
             />
             <button
