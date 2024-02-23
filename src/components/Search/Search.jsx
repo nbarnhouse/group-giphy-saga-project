@@ -21,9 +21,9 @@ export default function Search() {
     }
   };
 
-  // const addFavoriteStatus = () => {
-  //   console.log('Add Favorite:');
-  // };
+  const addFavoriteStatus = (imageId) => {
+    console.log(`Add Favorite: ${imageId}`);
+  };
 
   return (
     <div className="search-view-div">
@@ -50,12 +50,19 @@ export default function Search() {
       </div> */}
       <div className="results-container">
         {currentGiphyResults.map((image) => (
-          <img
-            className="results-display"
-            key={image.id}
-            src={image.url}
-            alt={image.title}
-          />
+          <div className="results-item" key={image.id}>
+            <img
+              className="results-display"
+              src={image.url}
+              alt={image.title}
+            />
+            <button
+              className="like-format"
+              onClick={() => addFavoriteStatus(image.id)}
+            >
+              Like
+            </button>
+          </div>
         ))}
       </div>
     </div>
