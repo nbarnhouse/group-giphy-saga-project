@@ -31,9 +31,11 @@ export default function Search() {
       // Add to favorites
       setFavorites([...favorites, imageId]);
 
-      //Axios call here
+      //Axios call here++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      
     }
   };
+  console.log('Favs:', favorites);
 
   return (
     <div className="search-view-div">

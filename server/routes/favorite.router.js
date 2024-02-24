@@ -10,7 +10,19 @@ router.get('/', (req, res) => {
 
 // add a new favorite
 router.post('/', (req, res) => {
-  res.sendStatus(201);
+  console.log('Posting a new favorite to DB');
+  //POST query text
+  let queryText = 'INSERT INTO "favorites" ("image_id", "url", "title", "category_id") VALUES ($1, $2, $3, null);';
+  let queryArgs = [req.body.id, req.body.small_url, req.body.title];
+  pool.query(queryText, queryArgs)
+  .then((result) => {
+    console.log('Gif added to Favorites DB');
+    res.sendStatus(201);
+  })
+  .catch((err) => {
+    console.log('ERROR in POST to Favorites DB Query:', err);
+    res.sendStatus(500);
+  });
 });
 
 // update a favorite's associated category
