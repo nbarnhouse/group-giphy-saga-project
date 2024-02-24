@@ -24,38 +24,34 @@ export default function Search() {
   };
 
   const addFavoriteStatus = (image) => {
-    console.log(`Add Favorite: ${image.id}`);
+    console.log(`Add/remove Favorite: ${image.id}`);
     if (favorites.includes(image.id)) {
       // Remove from favorites
       setFavorites(favorites.filter((id) => id !== image.id));
+
+      //Axios DELETE call here
+      axios.delete(`/api/favorites/${image.id}`)
+      .then((response) => {
+        //Don't think we need anything here, yes?
+      })
+      .catch((err) => {
+          console.error('ERROR in client favorites DELETE:', err);
+      });
     } else {
       // Add to favorites
       setFavorites([...favorites, image.id]);
 
-      //Axios call here++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      //Axios POST call here
       axios.post('/api/favorites', image)
       .then((response) => {
-        //Do we need anything here?????????????????????????????
+        //Do we need anything here?? I don't think so?
       })
       .catch((err) => {
         console.error('ERROR in client favorites POST:', err);
       });
     }
   };
-
-  const TESTFUNC = (image) => {
-    //console.log(image);
-    axios.post('/api/favorites', image)
-    .then((response) => {
-      //Do we need anything here?????????????????????????????
-    })
-    .catch((err) => {
-      console.error('ERROR in client favorites POST:', err);
-    });
-  }
-
   console.log('Favs:', favorites);
-
   return (
     <div className="search-view-div">
       {/* <h1> I am a search view placeholder</h1> */}
