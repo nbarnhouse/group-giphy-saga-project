@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -22,19 +23,37 @@ export default function Search() {
     }
   };
 
-  const addFavoriteStatus = (imageId) => {
-    console.log(`Add Favorite: ${imageId}`);
-    if (favorites.includes(imageId)) {
+  const addFavoriteStatus = (image) => {
+    console.log(`Add Favorite: ${image.id}`);
+    if (favorites.includes(image.id)) {
       // Remove from favorites
-      setFavorites(favorites.filter((id) => id !== imageId));
+      setFavorites(favorites.filter((id) => id !== image.id));
     } else {
       // Add to favorites
-      setFavorites([...favorites, imageId]);
+      setFavorites([...favorites, image.id]);
 
       //Axios call here++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      
+      axios.post('/api/favorites', image)
+      .then((response) => {
+        //Do we need anything here?????????????????????????????
+      })
+      .catch((err) => {
+        console.error('ERROR in client favorites POST:', err);
+      });
     }
   };
+
+  const TESTFUNC = (image) => {
+    //console.log(image);
+    axios.post('/api/favorites', image)
+    .then((response) => {
+      //Do we need anything here?????????????????????????????
+    })
+    .catch((err) => {
+      console.error('ERROR in client favorites POST:', err);
+    });
+  }
+
   console.log('Favs:', favorites);
 
   return (
@@ -72,7 +91,7 @@ export default function Search() {
               className={`like-format ${
                 favorites.includes(image.id) ? 'favorited' : ''
               }`}
-              onClick={() => addFavoriteStatus(image.id)}
+              onClick={() => addFavoriteStatus(image)}
             >
               {favorites.includes(image.id) ? 'Favorited' : 'Like'}
             </button>
