@@ -12,7 +12,6 @@ router.get('/', (req, res) => {
   .then((result) => {
     console.log('Favorites fetched from DB');
     res.send(result.rows);
-    res.sendStatus(200);
   })
   .catch((err) => {
     console.log('ERROR in GET from Favorites DB Query:', err);

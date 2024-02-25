@@ -30,25 +30,13 @@ export default function Search() {
       setFavorites(favorites.filter((id) => id !== image.id));
 
       //Axios DELETE call here
-      axios.delete(`/api/favorites/${image.id}`)
-      .then((response) => {
-        //Don't think we need anything here, yes?
-      })
-      .catch((err) => {
-          console.error('ERROR in client favorites DELETE:', err);
-      });
+      dispatch({ type: 'DELETE_FAVORITE', payload: image });
     } else {
       // Add to favorites
       setFavorites([...favorites, image.id]);
 
       //Axios POST call here
-      axios.post('/api/favorites', image)
-      .then((response) => {
-        //Do we need anything here?? I don't think so?
-      })
-      .catch((err) => {
-        console.error('ERROR in client favorites POST:', err);
-      });
+      dispatch({ type: 'POST_FAVORITE', payload: image });
     }
   };
   console.log('Favs:', favorites);
