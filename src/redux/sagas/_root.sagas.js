@@ -5,6 +5,8 @@ import { getCategoriesSaga } from './getCategories.saga';
 import { postCategorySaga } from './postCategory.saga';
 import { deleteCategorySaga } from './deleteCategory.saga';
 import { putCategorySaga } from './putCategory.saga';
+import { getFavoritesSaga } from './getFavorites.saga';
+import { postFavoriteSaga } from './postFavorite.saga';
 
 // Import Saga files here
 
@@ -17,6 +19,8 @@ function* rootSaga() {
   yield takeEvery('POST_CATEGORY', postCategorySaga);
   yield takeEvery('DELETE_CATEGORY', deleteCategorySaga);
   yield takeEvery('PUT_CATEGORY', putCategorySaga);
+  yield takeEvery('GET_FAVORITES', getFavoritesSaga);
+  yield takeEvery('POST_FAVORITE', postFavoriteSaga);
 }
 
 export default rootSaga;
