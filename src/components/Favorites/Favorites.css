@@ -1,0 +1,16 @@
+.favorites-container {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .favorites-item {
+    position: relative;
+  }
+  
+  .favorites-display {
+    height: 350px;
+    width: 350px;
+  }
