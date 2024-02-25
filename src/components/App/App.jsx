@@ -4,6 +4,7 @@ import Header from '../Header/Header';
 import Search from '../Search/Search';
 import Favorites from '../Favorites/Favorites';
 import Manage from '../Manage/Manage';
+import SearchPage from '../SearchPage/SearchPage';
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
           path="/"
           exact>
           <Search />
+        </Route>
+        <Route path="/page/:pageId">
+          <SearchPage />
         </Route>
         <Route path="/favorites">
           <Favorites />

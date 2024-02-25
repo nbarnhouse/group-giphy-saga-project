@@ -1,16 +1,19 @@
+import { useParams, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
-import './Search.css';
+import './SearchPage.css';
 
-export default function Search() {
+export default function SearchPage() {
+  const { pageId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+  const currentSearchTerm = useSelector((store) => store.currentSearch);
   const currentGiphyResults = useSelector((store) => store.searchResults);
   const [searchInput, setSearchInput] = useState({ name: '' });
   const [favorites, setFavorites] = useState([]);
   const [limit, setLimit] = useState(12);
+  const pageResults = currentGiphyResults.slice((pageId - 1) * 12, pageId * 12);
 
   const searchBtnClk = (event) => {
     event.preventDefault();
@@ -43,9 +46,13 @@ export default function Search() {
     }
   };
 
+  const switchPage = (newPage) => {
+    console.log('Moving to page:', newPage);
+    history.push(`/page/${newPage}`);
+  };
+
   return (
     <div className="search-view-div">
-      {/* <h1> I am a search view placeholder</h1> */}
       <div className="search-div">
         {/* <label htmlFor="searchInput">Giphy Search Criteria:</label> */}
         <input
@@ -77,8 +84,55 @@ export default function Search() {
           return <p key={giphyResult.id}>{JSON.stringify(giphyResult)}</p>;
         })}
       </div> */}
+      <div className="page-nav-div">
+        <h2>Search results for "{currentSearchTerm}":</h2>
+        <ul>
+          {pageId > 1 && (
+            <li
+              onClick={() => {
+                switchPage(+pageId - 1);
+              }}>
+              {'<<'}
+            </li>
+          )}
+          {(() => {
+            const pageOptions = [];
+            for (
+              let pageIndex = 1;
+              pageIndex <= Math.ceil(currentGiphyResults.length / 12);
+              pageIndex++
+            ) {
+              pageOptions.push(
+                +pageId !== pageIndex ? (
+                  <li
+                    key={pageIndex}
+                    onClick={() => switchPage(pageIndex)}>
+                    {pageIndex}
+                  </li>
+                ) : (
+                  <li
+                    key={pageIndex}
+                    className="bigger bold"
+                    onClick={() => switchPage(pageIndex)}>
+                    {pageIndex}
+                  </li>
+                )
+              );
+            }
+            return pageOptions;
+          })()}
+          {pageId < Math.ceil(currentGiphyResults.length / 12) && (
+            <li
+              onClick={() => {
+                switchPage(+pageId + 1);
+              }}>
+              {'>>'}
+            </li>
+          )}
+        </ul>
+      </div>
       <div className="results-container">
-        {currentGiphyResults.map((image) => (
+        {pageResults.map((image) => (
           <div
             className="results-item"
             key={image.id}>

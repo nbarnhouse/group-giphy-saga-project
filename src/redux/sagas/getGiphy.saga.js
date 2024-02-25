@@ -7,6 +7,7 @@ export function* getGiphySaga(action) {
   try {
     const searchResponse = yield axios.post('/api/search', {
       searchTerm: action.payload.name,
+      pageLimit: action.payload.limit,
     });
     yield put({ type: 'SET_SEARCH_RESULTS', payload: searchResponse.data });
   } catch (err) {

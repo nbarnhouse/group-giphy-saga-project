@@ -10,9 +10,10 @@ const GIPHY_BASE_URL = 'api.giphy.com/v1/gifs/search';
 // console.log('API Key:', API_KEY);
 
 router.post('/', (req, res) => {
-  const { searchTerm } = req.body;
-  const endpointURL = `https://${GIPHY_BASE_URL}/?api_key=${API_KEY}&q=${searchTerm}&limit=12`;
-  // console.log('Endpoint URL:', endpointURL);
+  const { searchTerm, pageLimit } = req.body;
+  console.log('SearchTerm:', searchTerm);
+  const endpointURL = `https://${GIPHY_BASE_URL}/?api_key=${API_KEY}&q=${searchTerm.name}&limit=${pageLimit}`;
+  console.log('Endpoint URL:', endpointURL);
   axios
     .get(endpointURL)
     .then((response) => {
