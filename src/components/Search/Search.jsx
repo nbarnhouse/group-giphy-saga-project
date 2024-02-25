@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -22,19 +23,23 @@ export default function Search() {
     }
   };
 
-  const addFavoriteStatus = (imageId) => {
-    console.log(`Add Favorite: ${imageId}`);
-    if (favorites.includes(imageId)) {
+  const addFavoriteStatus = (image) => {
+    console.log(`Add/remove Favorite: ${image.id}`);
+    if (favorites.includes(image.id)) {
       // Remove from favorites
-      setFavorites(favorites.filter((id) => id !== imageId));
+      setFavorites(favorites.filter((id) => id !== image.id));
+
+      //Axios DELETE call here
+      dispatch({ type: 'DELETE_FAVORITE', payload: image });
     } else {
       // Add to favorites
-      setFavorites([...favorites, imageId]);
+      setFavorites([...favorites, image.id]);
 
-      //Axios call here
+      //Axios POST call here
+      dispatch({ type: 'POST_FAVORITE', payload: image });
     }
   };
-
+  console.log('Favs:', favorites);
   return (
     <div className="search-view-div">
       {/* <h1> I am a search view placeholder</h1> */}
@@ -70,7 +75,7 @@ export default function Search() {
               className={`like-format ${
                 favorites.includes(image.id) ? 'favorited' : ''
               }`}
-              onClick={() => addFavoriteStatus(image.id)}
+              onClick={() => addFavoriteStatus(image)}
             >
               {favorites.includes(image.id) ? 'Favorited' : 'Like'}
             </button>

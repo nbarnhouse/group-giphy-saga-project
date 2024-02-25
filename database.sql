@@ -27,4 +27,4 @@ CREATE TABLE "favorites" (
 
 INSERT INTO favorites
 ("image_id", "url", "title", "category_id")
-VALUES (wEM71wbHnFPTHa7FSt, 'https://media4.giphy.com/media/wEM71wbHnFPTHa7FSt/giphy.gif?cid=4af27364vgoqrmjns1fdgc1nmh4dq8uj6byugqfys9tto538&ep=v1_gifs_search&rid=giphy.gif&ct=g', 'Full Moon Love GIF by darrenjturner', '1')
+VALUES ('wEM71wbHnFPTHa7FSt', 'https://media4.giphy.com/media/wEM71wbHnFPTHa7FSt/giphy.gif?cid=4af27364vgoqrmjns1fdgc1nmh4dq8uj6byugqfys9tto538&ep=v1_gifs_search&rid=giphy.gif&ct=g', 'Full Moon Love GIF by darrenjturner', '1')
