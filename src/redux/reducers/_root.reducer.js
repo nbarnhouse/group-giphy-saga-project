@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { searchResults } from './searchResults.reducer';
+import { searchResults, currentSearch } from './searchResults.reducer';
 import { categories } from './categories.reducer';
 import { favorites } from './favorites.reducer';
 
@@ -10,6 +10,7 @@ const rootReducer = combineReducers({
   /* Reducers*/
   searchResults,
   categories,
+  currentSearch,
   favorites,
 });
 

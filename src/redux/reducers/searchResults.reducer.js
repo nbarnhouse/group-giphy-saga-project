@@ -9,3 +9,10 @@ export const searchResults = (state = [], action) => {
   }
   return state;
 };
+
+export const currentSearch = (state = '', action) => {
+  if (action.type === 'SET_CURRENT_SEARCH') {
+    return action.payload;
+  }
+  return state;
+};

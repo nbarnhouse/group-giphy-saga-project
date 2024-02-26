@@ -12,6 +12,7 @@ button {
   justify-content: center;
   align-items: center;
   height: 10vh;
+  border-bottom: 1px solid black;
 }
 
 .results-container {
@@ -20,6 +21,7 @@ button {
   flex-flow: row wrap;
   align-items: flex-start;
   gap: 20px;
+  padding-top: 20px;
 }
 
 .results-item {
@@ -48,4 +50,41 @@ button {
 
 .search-div label {
   margin-left: 20px;
+}
+
+.page-nav-div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.page-nav-div ul {
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  color: blue;
+  font-size: x-large;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0px;
+}
+
+.page-nav-div h2 {
+  margin: 0px;
+}
+
+.page-nav-div li {
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.bigger {
+  font-size: xx-large;
 }
