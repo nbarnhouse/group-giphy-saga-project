@@ -9,8 +9,9 @@ export default function Search() {
   const dispatch = useDispatch();
   const history = useHistory();
   const currentGiphyResults = useSelector((store) => store.searchResults);
+  const globalFavorites = useSelector((store) => store.favorites);
   const [searchInput, setSearchInput] = useState({ name: '' });
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(globalFavorites);
   const [limit, setLimit] = useState(12);
 
   const searchBtnClk = (event) => {
@@ -21,6 +22,7 @@ export default function Search() {
       payload: { name: searchInput, limit: limit },
     });
     dispatch({ type: 'SET_CURRENT_SEARCH', payload: searchInput.name });
+    dispatch({ type: 'GET_FAVORITES' });
     setSearchInput({ name: '' });
     history.push('/page/1');
   };
@@ -33,21 +35,23 @@ export default function Search() {
 
   const addFavoriteStatus = (image) => {
     console.log(`Add/remove Favorite: ${image.id}`);
-    if (favorites.includes(image.id)) {
-      // Remove from favorites
-      setFavorites(favorites.filter((id) => id !== image.id));
-
+    if (
+      favorites.filter((item) => {
+        return item.image_id === image.id;
+      }).length > 0
+    ) {
       //Axios DELETE call here
       dispatch({ type: 'DELETE_FAVORITE', payload: image });
+      // Remove from favorites
+      setFavorites(globalFavorites);
     } else {
-      // Add to favorites
-      setFavorites([...favorites, image.id]);
-
       //Axios POST call here
       dispatch({ type: 'POST_FAVORITE', payload: image });
+      // Add to favorites
+      setFavorites(globalFavorites);
     }
   };
-  console.log('Favs:', favorites);
+  console.log('Favs:', favorites, '\ngiphyResults', currentGiphyResults);
   return (
     <div className="search-view-div">
       {/* <h1> I am a search view placeholder</h1> */}
@@ -94,10 +98,18 @@ export default function Search() {
             />
             <button
               className={`like-format ${
-                favorites.includes(image.id) ? 'favorited' : ''
+                favorites.filter((item) => {
+                  return item.image_id === image.id;
+                }).length > 0
+                  ? 'favorited'
+                  : ''
               }`}
               onClick={() => addFavoriteStatus(image)}>
-              {favorites.includes(image.id) ? 'Favorited' : 'Like'}
+              {favorites.filter((item) => {
+                return item.image_id === image.id;
+              }).length > 0
+                ? 'Favorited'
+                : 'Like'}
             </button>
           </div>
         ))}

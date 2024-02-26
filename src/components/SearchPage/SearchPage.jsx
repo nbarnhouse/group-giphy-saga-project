@@ -10,8 +10,9 @@ export default function SearchPage() {
   const history = useHistory();
   const currentSearchTerm = useSelector((store) => store.currentSearch);
   const currentGiphyResults = useSelector((store) => store.searchResults);
+  const globalFavorites = useSelector((store) => store.favorites);
   const [searchInput, setSearchInput] = useState({ name: '' });
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(globalFavorites);
   const [limit, setLimit] = useState(12);
   const pageResults = currentGiphyResults.slice((pageId - 1) * 12, pageId * 12);
 
@@ -23,6 +24,7 @@ export default function SearchPage() {
       payload: { name: searchInput, limit: limit },
     });
     dispatch({ type: 'SET_CURRENT_SEARCH', payload: searchInput.name });
+    dispatch({ type: 'GET_FAVORITES' });
     setSearchInput({ name: '' });
     history.push('/page/1');
   };
@@ -33,16 +35,22 @@ export default function SearchPage() {
     }
   };
 
-  const addFavoriteStatus = (imageId) => {
-    console.log(`Add Favorite: ${imageId}`);
-    if (favorites.includes(imageId)) {
+  const addFavoriteStatus = (image) => {
+    console.log(`Add/remove Favorite: ${image.id}`);
+    if (
+      favorites.filter((item) => {
+        return item.image_id === image.id;
+      }).length > 0
+    ) {
+      //Axios DELETE call here
+      dispatch({ type: 'DELETE_FAVORITE', payload: image });
       // Remove from favorites
-      setFavorites(favorites.filter((id) => id !== imageId));
+      setFavorites(globalFavorites);
     } else {
+      //Axios POST call here
+      dispatch({ type: 'POST_FAVORITE', payload: image });
       // Add to favorites
-      setFavorites([...favorites, imageId]);
-
-      //Axios call here
+      setFavorites(globalFavorites);
     }
   };
 
@@ -50,7 +58,7 @@ export default function SearchPage() {
     console.log('Moving to page:', newPage);
     history.push(`/page/${newPage}`);
   };
-
+  console.log('Favs:', favorites, '\ngiphyResults', currentGiphyResults);
   return (
     <div className="search-view-div">
       <div className="search-div">
@@ -143,10 +151,18 @@ export default function SearchPage() {
             />
             <button
               className={`like-format ${
-                favorites.includes(image.id) ? 'favorited' : ''
+                favorites.filter((item) => {
+                  return item.image_id === image.id;
+                }).length > 0
+                  ? 'favorited'
+                  : ''
               }`}
-              onClick={() => addFavoriteStatus(image.id)}>
-              {favorites.includes(image.id) ? 'Favorited' : 'Like'}
+              onClick={() => addFavoriteStatus(image)}>
+              {favorites.filter((item) => {
+                return item.image_id === image.id;
+              }).length > 0
+                ? 'Favorited'
+                : 'Like'}
             </button>
           </div>
         ))}
