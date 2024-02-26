@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -43,14 +43,18 @@ export default function Search() {
       //Axios DELETE call here
       dispatch({ type: 'DELETE_FAVORITE', payload: image });
       // Remove from favorites
-      setFavorites(globalFavorites);
+      setFavorites([...globalFavorites]);
     } else {
       //Axios POST call here
       dispatch({ type: 'POST_FAVORITE', payload: image });
       // Add to favorites
-      setFavorites(globalFavorites);
+      setFavorites([...globalFavorites]);
     }
   };
+
+  useEffect(() => {
+    dispatch({ type: 'GET_FAVORITES' });
+  }, []);
   console.log('Favs:', favorites, '\ngiphyResults', currentGiphyResults);
   return (
     <div className="search-view-div">

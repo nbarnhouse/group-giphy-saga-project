@@ -6,7 +6,7 @@ export default function Header() {
 
   const navClk = (event, navAction) => {
     if (navAction === 'search') {
-      history.push('/');
+      history.push('/page/1');
     } else if (navAction === 'favorites') {
       history.push('/favorites');
     } else if (navAction === 'manage') {

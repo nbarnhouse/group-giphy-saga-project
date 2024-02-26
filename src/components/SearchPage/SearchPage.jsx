@@ -1,5 +1,5 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './SearchPage.css';
@@ -45,12 +45,14 @@ export default function SearchPage() {
       //Axios DELETE call here
       dispatch({ type: 'DELETE_FAVORITE', payload: image });
       // Remove from favorites
-      setFavorites(globalFavorites);
+      console.log('faves Length:', globalFavorites.length);
+      setFavorites([...globalFavorites]);
     } else {
       //Axios POST call here
       dispatch({ type: 'POST_FAVORITE', payload: image });
       // Add to favorites
-      setFavorites(globalFavorites);
+      console.log('faves Length:', globalFavorites.length);
+      setFavorites([...globalFavorites]);
     }
   };
 
@@ -58,6 +60,10 @@ export default function SearchPage() {
     console.log('Moving to page:', newPage);
     history.push(`/page/${newPage}`);
   };
+  useEffect(() => {
+    dispatch({ type: 'GET_FAVORITES' });
+    setFavorites([...globalFavorites]);
+  }, []);
   console.log('Favs:', favorites, '\ngiphyResults', currentGiphyResults);
   return (
     <div className="search-view-div">
