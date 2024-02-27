@@ -14,6 +14,10 @@ export default function Search() {
   const [favorites, setFavorites] = useState(globalFavorites);
   const [limit, setLimit] = useState(12);
 
+  useEffect(() => {
+    dispatch({ type: 'GET_FAVORITES' });
+  }, [dispatch]);
+
   const searchBtnClk = (event) => {
     event.preventDefault();
     console.log('Search Button Clicked!');
@@ -35,26 +39,58 @@ export default function Search() {
 
   const addFavoriteStatus = (image) => {
     console.log(`Add/remove Favorite: ${image.id}`);
-    if (
-      favorites.filter((item) => {
-        return item.image_id === image.id;
-      }).length > 0
-    ) {
-      //Axios DELETE call here
-      dispatch({ type: 'DELETE_FAVORITE', payload: image });
-      // Remove from favorites
-      setFavorites([...globalFavorites]);
+
+    const isAlreadyFavorited = globalFavorites.some(
+      (item) => item.image_id === image.id
+    );
+
+    // Update local state immediately
+    setFavorites((prevFavorites) => {
+      if (isAlreadyFavorited) {
+        return prevFavorites.filter((item) => item.image_id !== image.id);
+      } else {
+        return [
+          ...prevFavorites,
+          { image_id: image.id /* add other properties if needed */ },
+        ];
+      }
+    });
+
+    if (isAlreadyFavorited) {
+      // Axios DELETE call here
+      axios
+        .delete(`/api/favorites/${image.id}`)
+        .then(() => {
+          console.log('Favorite removed from the database');
+          // Dispatch an action to update the state with the removed favorite
+          dispatch({ type: 'DELETE_FAVORITE', payload: image.id });
+        })
+        .catch((error) => {
+          console.error('Error removing favorite from the database:', error);
+          // If there's an error, revert the local state change
+          setFavorites((prevFavorites) => [
+            ...prevFavorites,
+            { image_id: image.id },
+          ]);
+        });
     } else {
       //Axios POST call here
-      dispatch({ type: 'POST_FAVORITE', payload: image });
-      // Add to favorites
-      setFavorites([...globalFavorites]);
+      axios
+        .post('/api/favorites', { imageId: image.id })
+        .then((response) => {
+          console.log('Favorite added to the database:', response);
+          //update spa
+          dispatch({ type: 'POST_FAVORITE', payload: response.data });
+        })
+        .catch((error) => {
+          console.error('Error adding favorite to the database:', error);
+          setFavorites((prevFavorites) =>
+            prevFavorites.filter((item) => item.image_id !== image.id)
+          );
+        });
     }
   };
 
-  useEffect(() => {
-    dispatch({ type: 'GET_FAVORITES' });
-  }, []);
   console.log('Favs:', favorites, '\ngiphyResults', currentGiphyResults);
   return (
     <div className="search-view-div">
@@ -92,26 +128,14 @@ export default function Search() {
       </div> */}
       <div className="results-container">
         {currentGiphyResults.map((image) => (
-          <div
-            className="results-item"
-            key={image.id}>
+          <div className="results-item" key={image.id}>
             <img
               className="results-display"
               src={image.small_url}
               alt={image.title}
             />
-            <button
-              className={`like-format ${
-                favorites.filter((item) => {
-                  return item.image_id === image.id;
-                }).length > 0
-                  ? 'favorited'
-                  : ''
-              }`}
-              onClick={() => addFavoriteStatus(image)}>
-              {favorites.filter((item) => {
-                return item.image_id === image.id;
-              }).length > 0
+            <button onClick={() => addFavoriteStatus(image)}>
+              {globalFavorites.some((item) => item.image_id === image.id)
                 ? 'Favorited'
                 : 'Like'}
             </button>
