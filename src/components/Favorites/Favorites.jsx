@@ -18,6 +18,9 @@ export default function Favorites() {
   dispatch({ type: 'GET_CATEGORIES' });
   }, []);
 
+  console.log('CATEGORY LIST!!!', categoryList);
+  console.log('CURRENT FAVS!!!', currentFavorites);
+
   const categorizeGif = (event) => {
     event.preventDefault();
     let cat_id = event.target.value;
@@ -32,7 +35,9 @@ export default function Favorites() {
       <h1>Our Favorite Gifs!</h1>
     </div>
     <div className="favorites-container">
-    {currentFavorites.map((image) => (
+    {currentFavorites.map((image) => {
+      const categorymatch = categoryList.find((category) => category.id === image.category_id);
+      return (
       <div className="favorites-item" key={image.id} id={image.image_id}>
         <img
           className="favorites-display"
@@ -47,7 +52,7 @@ export default function Favorites() {
           <select
             name="category-select"
             id="category-select"
-            //value={category}
+            value={categorymatch ? categorymatch.id : ''}
             onChange={categorizeGif}>
             <option value={''}>Choose a Category</option>
             {categoryList.map((item) => {
@@ -63,7 +68,7 @@ export default function Favorites() {
         </div>
       {/* ------------------------------------------------------------------------------ */}
       </div>
-    ))}
+    )})}
     </div>
   </>
   );
