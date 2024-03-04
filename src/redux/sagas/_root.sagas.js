@@ -10,6 +10,7 @@ import { putCategorySaga } from './putCategory.saga';
 import { getFavoritesSaga } from './getFavorites.saga';
 import { postFavoriteSaga } from './postFavorite.saga';
 import { deleteFavoriteSaga } from './deleteFavorite.saga';
+import { putFavoriteSaga } from './putFavorite.saga';
 
 // Import Saga files here
 
@@ -27,6 +28,8 @@ function* rootSaga() {
   yield takeEvery('GET_FAVORITES', getFavoritesSaga);
   yield takeEvery('POST_FAVORITE', postFavoriteSaga);
   yield takeEvery('DELETE_FAVORITE', deleteFavoriteSaga);
+  yield takeEvery('PUT_FAVORITE', putFavoriteSaga);
+
 }
 
 export default rootSaga;

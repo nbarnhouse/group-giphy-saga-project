@@ -36,10 +36,21 @@ router.post('/', (req, res) => {
   });
 });
 
-// update a favorite's associated category
+// update a favorite's associated category, req.body should contain a category_id to add to this favorite image
 router.put('/:id', (req, res) => {
-  // req.body should contain a category_id to add to this favorite image
-  res.sendStatus(200);
+  console.log('Updating favorite with new category');
+  //query text
+  let queryText = 'UPDATE "favorites" SET "category_id" = $1 WHERE "image_id" = $2;';
+  let queryArgs = [req.body.categoryId, req.params.id]
+  pool.query(queryText, queryArgs)
+  .then((result) => {
+    console.log('Gif has been categorized');
+    res.sendStatus(200);
+  })
+  .catch((err) => {
+    console.log('ERROR in PUT to Favorites DB Query:', err);
+    res.sendStatus(500);
+  });
 });
 
 // delete a favorite

@@ -7,6 +7,7 @@ export default function Favorites() {
   const dispatch = useDispatch();
   const currentFavorites = useSelector((store) => store.favorites);
   const categoryList = useSelector((store) => store.categories);
+  //let [category, setCategory] = useState('')
 
   //Initial load of component
   useEffect(() => {
@@ -17,14 +18,27 @@ export default function Favorites() {
   dispatch({ type: 'GET_CATEGORIES' });
   }, []);
 
+  console.log('CATEGORY LIST!!!', categoryList);
+  console.log('CURRENT FAVS!!!', currentFavorites);
+
+  const categorizeGif = (event) => {
+    event.preventDefault();
+    let cat_id = event.target.value;
+    let image_id = event.target.parentElement.parentElement.id
+    dispatch({ type: 'PUT_FAVORITE', payload: {id: image_id, categoryId: cat_id} });
+    //setCategory(event.target.value)
+  }
+
   return (
   <>  
     <div className="favorites-view-div">
       <h1>Our Favorite Gifs!</h1>
     </div>
     <div className="favorites-container">
-    {currentFavorites.map((image) => (
-      <div className="favorites-item" key={image.id}>
+    {currentFavorites.map((image) => {
+      const categorymatch = categoryList.find((category) => category.id === image.category_id);
+      return (
+      <div className="favorites-item" key={image.id} id={image.image_id}>
         <img
           className="favorites-display"
           src={image.url}
@@ -38,7 +52,8 @@ export default function Favorites() {
           <select
             name="category-select"
             id="category-select"
-            onChange={"FUNCTION-PLACEHOLDER"}> {/*FINISH THIS-----------------------------*/}
+            value={categorymatch ? categorymatch.id : ''}
+            onChange={categorizeGif}>
             <option value={''}>Choose a Category</option>
             {categoryList.map((item) => {
               return (
@@ -53,7 +68,7 @@ export default function Favorites() {
         </div>
       {/* ------------------------------------------------------------------------------ */}
       </div>
-    ))}
+    )})}
     </div>
   </>
   );
